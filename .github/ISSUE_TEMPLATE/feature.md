@@ -1,9 +1,9 @@
 ---
 name: 작업 이슈
 about: 작업 또는 문제를 등록해주세요
-title: ""
-labels: ""
-assignees: ""
+title: ''
+labels: ''
+assignees: ''
 ---
 
 ## 📄 설명
