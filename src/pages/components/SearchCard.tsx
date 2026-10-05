@@ -1,3 +1,5 @@
+import checkIcon from '../../assets/icons/icon-check.svg';
+
 interface SearchCardProps {
   court?: string;
   decisionDate?: string;
@@ -21,19 +23,22 @@ const SearchCard = ({
 }: SearchCardProps) => {
   return (
     <article className="border-b border-gray-200 px-[1rem] py-[1.25rem]">
-      <div className="flex flex-col gap-[0.5rem]">
-        <p className="text-[1rem] font-medium text-purple-500">
-          {court} {decisionDate} 선고 {caseNumber} 판결
-        </p>
+      <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-[0.5rem]">
+          <p className="text-[1rem] font-medium text-purple-500">
+            {court} {decisionDate} 선고 {caseNumber} 판결
+          </p>
 
-        <p className="text-[0.875rem] font-medium text-gray-900">[{title}]</p>
+          <p className="text-[0.875rem] text-gray-900">[{title}]</p>
+        </div>
 
         <p className="text-[0.875rem] leading-[1.25rem] text-gray-500">{preview}</p>
       </div>
 
-      <div className="mt-[1rem] flex items-center justify-between">
+      <div className="mt-[0.5rem] flex items-center justify-between">
         <div className="flex items-center gap-[0.5rem]">
-          <span className="rounded-[0.25rem] bg-gray-100 px-[0.25rem] py-[0.125rem] text-[0.6875rem] font-medium text-gray-700">
+          <span className="flex items-center gap-[0.125rem] rounded-[0.25rem] bg-gray-100 px-[0.25rem] py-[0.125rem] text-[0.6875rem] font-medium text-gray-700">
+            <img src={checkIcon} alt="" className="h-[0.625rem] w-[0.625rem]" />
             {resultLabel}
           </span>
 

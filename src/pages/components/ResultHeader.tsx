@@ -1,56 +1,30 @@
-import checkIcon from '../../assets/icons/icon-check.svg';
+import sortIcon from '../../assets/icons/icon-sort.svg';
 
-interface SearchCardProps {
-  court?: string;
-  decisionDate?: string;
-  caseNumber?: string;
-  title?: string;
-  preview?: string;
-  resultLabel?: string;
-  categoryLabel?: string;
-  views?: number;
+interface ResultHeaderProps {
+  resultCount?: number;
+  sortLabel?: string;
+  onSortClick?: () => void;
 }
 
-const SearchCard = ({
-  court = '서울중앙지방법원',
-  decisionDate = '2023. 4. 13.',
-  caseNumber = '2022가단5065289',
-  title = '층간소음으로인한위자료청구의건',
-  preview = '제정, 이하 ‘구규칙’이라 한다) 제3조 [별표]에 따르면 이 사건 아파트의 경우 그 층간 소음 기준이 1분간 등가소음도 43dB(주간), 38dB(야간)로서, 한국환경공단 층간소음 이웃사이센터에 의한 소음진동측정결과표에 의하면...',
-  resultLabel = '원고일부승',
-  categoryLabel = '청구취지',
-  views = 859,
-}: SearchCardProps) => {
+const ResultHeader = ({
+  resultCount = 3798,
+  sortLabel = '관련도순',
+  onSortClick,
+}: ResultHeaderProps) => {
   return (
-    <article className="border-b border-gray-200 px-[1rem] py-[1.25rem]">
-      <div className="flex flex-col gap-[1rem]">
-        <div className="flex flex-col gap-[0.5rem]">
-          <p className="text-[1rem] font-medium text-purple-500">
-            {court} {decisionDate} 선고 {caseNumber} 판결
-          </p>
+    <div className="flex items-center justify-between py-[0.75rem]">
+      <p className="text-[0.875rem] text-gray-500">검색 결과 {resultCount.toLocaleString()}개</p>
 
-          <p className="text-[0.875rem] text-gray-900">[{title}]</p>
-        </div>
-
-        <p className="text-[0.875rem] leading-[1.25rem] text-gray-500">{preview}</p>
-      </div>
-
-      <div className="mt-[0.5rem] flex items-center justify-between">
-        <div className="flex items-center gap-[0.5rem]">
-          <span className="flex items-center gap-[0.125rem] rounded-[0.25rem] bg-gray-100 px-[0.25rem] py-[0.125rem] text-[0.6875rem] font-medium text-gray-700">
-            <img src={checkIcon} alt="" className="h-[0.625rem] w-[0.625rem]" />
-            {resultLabel}
-          </span>
-
-          <span className="rounded-[0.25rem] bg-gray-100 px-[0.25rem] py-[0.125rem] text-[0.6875rem] font-medium text-gray-700">
-            {categoryLabel}
-          </span>
-        </div>
-
-        <span className="text-[0.75rem] text-gray-500">조회 {views.toLocaleString()}</span>
-      </div>
-    </article>
+      <button
+        type="button"
+        onClick={onSortClick}
+        className="flex cursor-pointer items-center gap-[0.125rem] text-[0.75rem] text-gray-500"
+      >
+        <img src={sortIcon} alt="" className="h-[1rem] w-[1rem]" />
+        <span>{sortLabel}</span>
+      </button>
+    </div>
   );
 };
 
-export default SearchCard;
+export default ResultHeader;
