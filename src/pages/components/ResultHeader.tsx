@@ -1,3 +1,5 @@
+import sortIcon from '../../assets/icons/icon-sort.svg';
+
 interface ResultHeaderProps {
   resultCount?: number;
   sortLabel?: string;
@@ -16,9 +18,11 @@ const ResultHeader = ({
       <button
         type="button"
         onClick={onSortClick}
-        className="cursor-pointer text-[0.75rem] text-gray-500"
+        className="flex cursor-pointer items-center gap-[0.125rem] text-[0.75rem] text-gray-500"
       >
-        {sortLabel}
+        <img src={sortIcon} alt="" className="h-[1rem] w-[1rem]" />
+
+        <span>{sortLabel}</span>
       </button>
     </div>
   );
