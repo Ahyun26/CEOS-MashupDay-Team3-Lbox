@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
 import archiveIcon from '../../assets/icons/icon-archive-black.svg';
-import arrowUpIcon from '../../assets/icons/icon-arrow-up.svg';
+import arrowIcon from '../../assets/icons/icon-arrow.svg';
 import editIcon from '../../assets/icons/icon-edit.svg';
 import plusIcon from '../../assets/icons/icon-plus.svg';
-import searchIcon from '../../assets/icons/icon-search-blue.svg';
+import searchIcon from '../../assets/icons/icon-search.svg';
 import starIcon from '../../assets/icons/icon-star.svg';
+import Icon from '../../components/common/Icon';
 
 const PromptInput = () => {
   const [prompt, setPrompt] = useState('');
@@ -51,7 +52,7 @@ const PromptInput = () => {
             </button>
 
             <button type="button" aria-label="전송" className="search-prompt-submit cursor-pointer">
-              <img src={arrowUpIcon} alt="" />
+              <Icon src={arrowIcon} className="size-[1.25rem] rotate-90 text-white" />
             </button>
           </div>
         </div>

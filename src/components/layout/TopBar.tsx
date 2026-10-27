@@ -1,7 +1,7 @@
 import iconCircle from '../../assets/icons/icon-circle.svg';
 import iconDropdown from '../../assets/icons/icon-dropdown-filled.svg';
 import iconLayer from '../../assets/icons/icon-layer-20.svg';
-import iconUpArrow from '../../assets/icons/icon-up-arrow.svg';
+import iconArrowLeft from '../../assets/icons/icon-arrow.svg';
 import IconButton from '../common/IconButton';
 
 interface ReferenceBadgeProps {
@@ -43,11 +43,11 @@ function TopBar({ title, onBack }: TopBarProps) {
         <div className="flex shrink-0 items-center gap-16">
           <IconButton label="뒤로가기" onClick={onBack} className="size-[1.25rem]">
             <img
-              src={iconUpArrow}
+              src={iconArrowLeft}
               alt=""
               width={20}
               height={20}
-              className="block size-[1.25rem] max-w-none -rotate-90"
+              className="block size-[1.25rem] max-w-none"
             />
           </IconButton>
           <p className="shrink-0 text-[0.875rem] leading-[normal] font-medium whitespace-nowrap text-gray-900">

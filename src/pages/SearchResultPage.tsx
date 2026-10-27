@@ -8,7 +8,7 @@ import playIcon from '../assets/icons/icon-play.svg';
 import archiveIcon from '../assets/icons/icon-archive.svg';
 import layersIcon from '../assets/icons/icon-layer.svg';
 import helpIcon from '../assets/icons/icon-question.svg';
-import backIcon from '../assets/icons/icon-arrow-left.svg';
+import backIcon from '../assets/icons/icon-arrow.svg';
 import dropdownIcon from '../assets/icons/icon-dropdown-filled.svg';
 import layerIcon from '../assets/icons/icon-layer.svg';
 import infoIcon from '../assets/icons/icon-info.svg';
