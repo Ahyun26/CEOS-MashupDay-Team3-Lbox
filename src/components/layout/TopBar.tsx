@@ -1,5 +1,5 @@
 import iconCircle from '../../assets/icons/icon-circle.svg';
-import iconDropdown from '../../assets/icons/icon-dropdown.svg';
+import iconDropdown from '../../assets/icons/icon-dropdown-filled.svg';
 import iconLayer from '../../assets/icons/icon-layer-20.svg';
 import iconUpArrow from '../../assets/icons/icon-up-arrow.svg';
 import IconButton from '../common/IconButton';

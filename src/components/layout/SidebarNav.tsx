@@ -1,6 +1,6 @@
 import avatarDefault from '../../assets/icons/avatar-default.svg';
 import iconArchive from '../../assets/icons/icon-archive.svg';
-import iconBell from '../../assets/icons/icon-bell.svg';
+import iconBell from '../../assets/icons/icon-bell-badge.svg';
 import iconColumn from '../../assets/icons/icon-column.svg';
 import iconHome from '../../assets/icons/icon-home.svg';
 import iconLayer from '../../assets/icons/icon-layer.svg';
