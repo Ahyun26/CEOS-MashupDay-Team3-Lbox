@@ -9,7 +9,12 @@ import IconButton from '../../../components/common/IconButton';
 const BUTTON_CLASS = 'size-[1.875rem] rounded-sm p-4';
 const ICON_CLASS = 'block size-[1.25rem] max-w-none shrink-0';
 
-function DocumentToolbar() {
+interface DocumentToolbarProps {
+  isPanelOpen: boolean;
+  onTogglePanel: () => void;
+}
+
+function DocumentToolbar({ isPanelOpen, onTogglePanel }: DocumentToolbarProps) {
   return (
     <div className="absolute bottom-[1rem] left-[calc(50%+0.5px)] flex -translate-x-1/2 flex-col items-start rounded-md border-[0.5px] border-gray-400 bg-(--color-surface-default) p-4 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.12)]">
       <div className="flex shrink-0 items-center gap-8">
@@ -47,7 +52,12 @@ function DocumentToolbar() {
         <IconButton label="새 창에서 열기" className={BUTTON_CLASS}>
           <img src={iconLink} alt="" width={20} height={20} className={ICON_CLASS} />
         </IconButton>
-        <IconButton label="패널 열기" className={`${BUTTON_CLASS} rotate-180`}>
+        <IconButton
+          label={isPanelOpen ? '패널 닫기' : '패널 열기'}
+          aria-pressed={isPanelOpen}
+          onClick={onTogglePanel}
+          className={`${BUTTON_CLASS} rotate-180`}
+        >
           <span className="relative block size-[1.25rem] shrink-0 overflow-clip">
             <img
               src={iconPannel}
