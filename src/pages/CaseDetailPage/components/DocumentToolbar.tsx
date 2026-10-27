@@ -1,9 +1,9 @@
-import iconLink from '../../../assets/icons/icon-link.svg';
-import iconMenu from '../../../assets/icons/icon-menu.svg';
-import iconPannel from '../../../assets/icons/icon-pannel.svg';
-import iconShare from '../../../assets/icons/icon-share.svg';
-import iconTextSearch from '../../../assets/icons/icon-text-search.svg';
-import toolbarDivider from '../../../assets/icons/toolbar-divider.svg';
+import iconLink from '../../../assets/icons/document/icon-link.svg';
+import iconMenu from '../../../assets/icons/document/icon-menu.svg';
+import iconPannel from '../../../assets/icons/document/icon-pannel.svg';
+import iconShare from '../../../assets/icons/document/icon-share.svg';
+import iconTextSearch from '../../../assets/icons/document/icon-text-search.svg';
+import toolbarDivider from '../../../assets/icons/document/toolbar-divider.svg';
 import IconButton from '../../../components/common/IconButton';
 
 const BUTTON_CLASS = 'size-[1.875rem] rounded-sm p-4';

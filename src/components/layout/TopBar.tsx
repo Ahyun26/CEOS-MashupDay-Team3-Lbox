@@ -1,7 +1,7 @@
-import iconCircle from '../../assets/icons/icon-circle.svg';
-import iconDropdown from '../../assets/icons/icon-dropdown-filled.svg';
-import iconLayer from '../../assets/icons/icon-layer-20.svg';
-import iconArrowLeft from '../../assets/icons/icon-arrow.svg';
+import iconCircle from '../../assets/icons/topbar/icon-circle.svg';
+import iconDropdown from '../../assets/icons/topbar/icon-dropdown-filled.svg';
+import iconLayer from '../../assets/icons/topbar/icon-layer-20.svg';
+import iconArrowLeft from '../../assets/icons/common/icon-arrow.svg';
 import IconButton from '../common/IconButton';
 
 interface ReferenceBadgeProps {

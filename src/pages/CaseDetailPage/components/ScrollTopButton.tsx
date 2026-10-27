@@ -1,4 +1,4 @@
-import iconScrollTop from '../../../assets/icons/icon-scroll-top.svg';
+import iconScrollTop from '../../../assets/icons/document/icon-scroll-top.svg';
 import IconButton from '../../../components/common/IconButton';
 
 interface ScrollTopButtonProps {

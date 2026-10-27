@@ -1,6 +1,6 @@
-import bellIcon from '../../assets/icons/icon-bell.svg';
-import dropdownIcon from '../../assets/icons/icon-dropdown.svg';
-import searchIcon from '../../assets/icons/icon-search.svg';
+import bellIcon from '../../assets/icons/search/icon-bell.svg';
+import dropdownIcon from '../../assets/icons/search/icon-dropdown.svg';
+import searchIcon from '../../assets/icons/search/icon-search.svg';
 
 import Chip from '../../components/common/Chip';
 

@@ -1,14 +1,14 @@
-import avatarDefault from '../../assets/icons/avatar-default.svg';
-import iconArchive from '../../assets/icons/icon-archive.svg';
-import iconBell from '../../assets/icons/icon-bell-badge.svg';
-import iconColumn from '../../assets/icons/icon-column.svg';
-import iconHome from '../../assets/icons/icon-home.svg';
-import iconLayer from '../../assets/icons/icon-layer.svg';
-import iconOpenBook from '../../assets/icons/icon-open-book.svg';
-import iconPlay from '../../assets/icons/icon-play.svg';
-import iconQuestion from '../../assets/icons/icon-question.svg';
-import iconSidebarToggle from '../../assets/icons/icon-sidebar-toggle.svg';
-import iconTime from '../../assets/icons/icon-time.svg';
+import avatarDefault from '../../assets/icons/sidebar/avatar-default.svg';
+import iconArchive from '../../assets/icons/sidebar/icon-archive.svg';
+import iconBell from '../../assets/icons/sidebar/icon-bell-badge.svg';
+import iconColumn from '../../assets/icons/sidebar/icon-column.svg';
+import iconHome from '../../assets/icons/sidebar/icon-home.svg';
+import iconLayer from '../../assets/icons/sidebar/icon-layer.svg';
+import iconOpenBook from '../../assets/icons/sidebar/icon-open-book.svg';
+import iconPlay from '../../assets/icons/sidebar/icon-play.svg';
+import iconQuestion from '../../assets/icons/sidebar/icon-question.svg';
+import iconSidebarToggle from '../../assets/icons/sidebar/icon-sidebar-toggle.svg';
+import iconTime from '../../assets/icons/sidebar/icon-time.svg';
 import IconButton from '../common/IconButton';
 
 interface NavItem {
