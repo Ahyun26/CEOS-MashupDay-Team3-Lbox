@@ -11,7 +11,7 @@ const ICON_CLASS = 'block size-[1.25rem] max-w-none shrink-0';
 
 function DocumentToolbar() {
   return (
-    <div className="absolute bottom-[0.625rem] left-[calc(50%+0.5px)] flex -translate-x-1/2 flex-col items-start rounded-md border-[0.5px] border-gray-400 bg-(--color-surface-default) p-4 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.12)]">
+    <div className="absolute bottom-[1rem] left-[calc(50%+0.5px)] flex -translate-x-1/2 flex-col items-start rounded-md border-[0.5px] border-gray-400 bg-(--color-surface-default) p-4 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.12)]">
       <div className="flex shrink-0 items-center gap-8">
         <IconButton label="공유" className={BUTTON_CLASS}>
           <img src={iconShare} alt="" width={20} height={20} className={ICON_CLASS} />

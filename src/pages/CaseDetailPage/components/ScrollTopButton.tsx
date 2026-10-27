@@ -10,7 +10,7 @@ function ScrollTopButton({ onClick }: ScrollTopButtonProps) {
     <IconButton
       label="맨 위로"
       onClick={onClick}
-      className="absolute right-[0.25rem] bottom-[0.8125rem] size-[2.5rem] overflow-clip rounded-md border border-(--color-border-default) bg-(--color-surface-default) shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]"
+      className="absolute right-[0.21875rem] bottom-[0.71875rem] size-[2.5rem] overflow-clip rounded-md border border-(--color-border-default) bg-(--color-surface-default) shadow-[0px_2px_4px_0px_rgba(0,0,0,0.1)]"
     >
       <img
         src={iconScrollTop}

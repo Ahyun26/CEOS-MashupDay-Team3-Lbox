@@ -1,6 +1,6 @@
 import avatarDefault from '../../assets/icons/sidebar/avatar-default.svg';
 import iconArchive from '../../assets/icons/sidebar/icon-archive.svg';
-import iconBell from '../../assets/icons/sidebar/icon-bell-badge.svg';
+import iconBell from '../../assets/icons/sidebar/icon-bell.svg';
 import iconColumn from '../../assets/icons/sidebar/icon-column.svg';
 import iconHome from '../../assets/icons/sidebar/icon-home.svg';
 import iconLayer from '../../assets/icons/sidebar/icon-layer.svg';
@@ -53,7 +53,7 @@ function SidebarNav() {
       className="flex h-full w-[3.5rem] shrink-0 flex-col items-start bg-(--color-surface-tertiary)"
     >
       <div className="flex w-[3.5rem] shrink-0 flex-col items-start">
-        <div className={`${GROUP_CLASS} ${DIVIDER_CLASS} shrink-0 gap-16`}>
+        <div className={`${GROUP_CLASS} ${DIVIDER_CLASS} shrink-0 gap-16 pb-16`}>
           <NavButton label="사이드바 열기" icon={iconSidebarToggle} />
           <IconButton label="프로필" className="size-[1.75rem] rounded-full">
             <img

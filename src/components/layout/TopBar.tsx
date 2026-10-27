@@ -1,32 +1,31 @@
-import iconCircle from '../../assets/icons/topbar/icon-circle.svg';
 import iconDropdown from '../../assets/icons/topbar/icon-dropdown-filled.svg';
+import iconInfo from '../../assets/icons/topbar/icon-info.svg';
 import iconLayer from '../../assets/icons/topbar/icon-layer-20.svg';
 import iconArrowLeft from '../../assets/icons/common/icon-arrow.svg';
 import IconButton from '../common/IconButton';
 
 interface ReferenceBadgeProps {
   count: number;
-  showIcon?: boolean;
 }
 
-function ReferenceBadge({ count, showIcon = false }: ReferenceBadgeProps) {
+function ReferenceBadge({ count }: ReferenceBadgeProps) {
   return (
     <button
       type="button"
-      className="flex h-[1.25rem] shrink-0 cursor-pointer items-center justify-center gap-4 overflow-clip rounded-sm border border-gray-400 bg-(--color-surface-default) px-8 py-[0.125rem]"
+      className="flex h-[1.25rem] shrink-0 cursor-pointer items-center justify-center gap-4 overflow-clip rounded-sm border border-(--color-border-default) bg-(--color-surface-default) px-8 py-[0.125rem]"
     >
       <span className="shrink-0 text-[0.75rem] leading-[1.4] font-medium whitespace-nowrap text-(--color-text-primary)">
         참조 파일 {count}
       </span>
-      {showIcon && (
+      <span className="relative block size-[0.8125rem] shrink-0 overflow-clip">
         <img
-          src={iconCircle}
+          src={iconInfo}
           alt=""
-          width={10}
-          height={10}
-          className="block size-[0.625rem] max-w-none shrink-0"
+          width={9}
+          height={9}
+          className="absolute top-[0.125rem] left-[0.125rem] block size-[0.5625rem] max-w-none"
         />
-      )}
+      </span>
     </button>
   );
 }
@@ -68,7 +67,7 @@ function TopBar({ title, onBack }: TopBarProps) {
       <div className="flex shrink-0 items-center gap-16">
         <div className="flex shrink-0 items-center gap-4">
           <ReferenceBadge count={0} />
-          <ReferenceBadge count={0} showIcon />
+          <ReferenceBadge count={0} />
         </div>
         <button type="button" className="flex shrink-0 cursor-pointer items-end gap-[0.125rem]">
           <img
