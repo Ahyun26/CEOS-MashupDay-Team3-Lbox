@@ -1,3 +1,4 @@
+import type { QueryStatus } from '@tanstack/react-query';
 import { useState } from 'react';
 import iconChart from '../../../assets/icons/panel/icon-chart.svg';
 import iconClosedBook from '../../../assets/icons/panel/icon-closed-book.svg';
@@ -5,7 +6,8 @@ import iconPen from '../../../assets/icons/panel/icon-pen.svg';
 import iconTextbox from '../../../assets/icons/panel/icon-textbox.svg';
 import iconXmark from '../../../assets/icons/common/icon-xmark.svg';
 import IconButton from '../../../components/common/IconButton';
-import type { CitationSection as CitationSectionData } from '../caseDetail.mock';
+import { useAutoOpenPanel } from '../../../hooks/useAutoOpenPanel';
+import type { CitationSection as CitationSectionData } from '../caseDetail.types';
 import CitationSection from './CitationSection';
 
 const TABS = [
@@ -18,7 +20,6 @@ const TABS = [
 type TabId = (typeof TABS)[number]['id'];
 
 function TabIcon({ id }: { id: TabId }) {
-  // 아이콘마다 Figma에서 20px 칸 안의 위치가 달라서 그대로 맞춤
   if (id === 'outline') {
     return (
       <span className="relative block size-[1.25rem] shrink-0 overflow-clip">
@@ -57,7 +58,7 @@ function TabIcon({ id }: { id: TabId }) {
 }
 
 function AutoOpenToggle() {
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useAutoOpenPanel();
 
   return (
     <button
@@ -65,14 +66,14 @@ function AutoOpenToggle() {
       role="switch"
       aria-checked={isOn}
       aria-label="패널 자동 열기"
-      onClick={() => setIsOn((prev) => !prev)}
+      onClick={() => setIsOn(!isOn)}
       className="flex shrink-0 cursor-pointer items-center justify-center"
     >
       <span className="-scale-y-100 rotate-180">
-        <span
-          className={`flex h-[0.60981rem] w-[1.1875rem] items-center overflow-clip rounded-full bg-gray-400 p-[0.125rem] ${isOn ? 'justify-start' : 'justify-end'}`}
-        >
-          <span className="size-[0.9375rem] shrink-0 rounded-full bg-gray-0 shadow-[0px_0px_0px_0px_rgba(0,0,0,0.04),0px_3px_8px_0px_rgba(0,0,0,0.15)]" />
+        <span className="flex h-[0.60981rem] w-[1.1875rem] items-center justify-end overflow-clip rounded-full bg-gray-400 p-[0.125rem]">
+          {isOn && (
+            <span className="size-[0.9375rem] shrink-0 rounded-full bg-gray-0 shadow-[0px_0px_0px_0px_rgba(0,0,0,0.04),0px_3px_8px_0px_rgba(0,0,0,0.15)]" />
+          )}
         </span>
       </span>
     </button>
@@ -83,11 +84,19 @@ interface CitationPanelProps {
   title: string;
   caseName: string;
   sections: CitationSectionData[];
+  citationsStatus: QueryStatus;
   onClose: () => void;
-  onSelectCase?: (caseId: string) => void;
+  onSelectCase?: (caseId: number) => void;
 }
 
-function CitationPanel({ title, caseName, sections, onClose, onSelectCase }: CitationPanelProps) {
+function CitationPanel({
+  title,
+  caseName,
+  sections,
+  citationsStatus,
+  onClose,
+  onSelectCase,
+}: CitationPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('detail');
 
   return (
@@ -139,9 +148,17 @@ function CitationPanel({ title, caseName, sections, onClose, onSelectCase }: Cit
         </div>
 
         <div className="flex min-h-0 w-full flex-col items-start overflow-y-auto [scrollbar-width:none]">
-          {sections.map(({ id, ...section }) => (
-            <CitationSection key={id} {...section} onSelectCase={onSelectCase} />
-          ))}
+          {citationsStatus === 'success' ? (
+            sections.map(({ id, ...section }) => (
+              <CitationSection key={id} {...section} onSelectCase={onSelectCase} />
+            ))
+          ) : (
+            <p className="caption-md w-full px-12 py-12 text-gray-600">
+              {citationsStatus === 'error'
+                ? '인용 판례를 불러오지 못했습니다.'
+                : '인용 판례를 불러오는 중입니다.'}
+            </p>
+          )}
         </div>
       </div>
 

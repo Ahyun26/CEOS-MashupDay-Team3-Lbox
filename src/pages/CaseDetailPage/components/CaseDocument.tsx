@@ -1,4 +1,4 @@
-import type { CaseDetail } from '../caseDetail.mock';
+import type { CaseDetail } from '../caseDetail.types';
 import CaseBody from './CaseBody';
 import CaseHeader from './CaseHeader';
 
@@ -11,7 +11,11 @@ function CaseDocument({ detail }: CaseDocumentProps) {
   return (
     <article className="mx-auto flex min-h-full w-full max-w-[46.75rem] flex-col items-center gap-px px-32">
       <CaseHeader title={detail.title} caseName={detail.caseName} />
-      <CaseBody courtLines={detail.courtLines} infoRows={detail.infoRows} />
+      <CaseBody
+        courtLines={detail.courtLines}
+        infoRows={detail.infoRows}
+        sections={detail.sections}
+      />
     </article>
   );
 }
