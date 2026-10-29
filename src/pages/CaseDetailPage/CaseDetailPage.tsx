@@ -15,7 +15,7 @@ import ScrollTopButton from './components/ScrollTopButton';
 function CaseDetailPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [comparedCaseId, setComparedCaseId] = useState<string | null>(null);
+  const [comparedCaseId, setComparedCaseId] = useState<number | null>(null);
   const caseDetail = CASE_DETAIL_MOCK;
 
   const scrollToTop = () => {

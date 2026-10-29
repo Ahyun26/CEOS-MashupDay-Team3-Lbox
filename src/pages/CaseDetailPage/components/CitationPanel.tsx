@@ -5,7 +5,7 @@ import iconPen from '../../../assets/icons/panel/icon-pen.svg';
 import iconTextbox from '../../../assets/icons/panel/icon-textbox.svg';
 import iconXmark from '../../../assets/icons/common/icon-xmark.svg';
 import IconButton from '../../../components/common/IconButton';
-import type { CitationSection as CitationSectionData } from '../caseDetail.mock';
+import type { CitationSection as CitationSectionData } from '../caseDetail.types';
 import CitationSection from './CitationSection';
 
 const TABS = [
@@ -84,7 +84,7 @@ interface CitationPanelProps {
   caseName: string;
   sections: CitationSectionData[];
   onClose: () => void;
-  onSelectCase?: (caseId: string) => void;
+  onSelectCase?: (caseId: number) => void;
 }
 
 function CitationPanel({ title, caseName, sections, onClose, onSelectCase }: CitationPanelProps) {

@@ -1,14 +1,4 @@
-export interface CaseInfoRow {
-  label: string;
-  lines: string[];
-}
-
-export interface CaseDetail {
-  title: string;
-  caseName: string;
-  courtLines: string[];
-  infoRows: CaseInfoRow[];
-}
+import type { CaseDetail, CitationSection, CitedCase } from './caseDetail.types';
 
 export const CASE_DETAIL_MOCK: CaseDetail = {
   title: '인천지방법원 2022. 2. 17. 선고 2020고합715, 2020고합628, 2020고합648, 2020고합702 판결',
@@ -25,27 +15,15 @@ export const CASE_DETAIL_MOCK: CaseDetail = {
       ],
     },
   ],
+  sections: [],
 };
 
 // TODO: GET /judgments/{citationId} 연동 후 제거 (지금은 어떤 인용 판례를 골라도 같은 내용)
 export const CITED_CASE_DETAIL_MOCK: CaseDetail = CASE_DETAIL_MOCK;
 
-export interface CitedCase {
-  id: string;
-  label: string;
-}
-
-export interface CitationSection {
-  id: string;
-  label: string;
-  count: number;
-  badge?: string;
-  cases: CitedCase[];
-}
-
-const createCitedCases = (sectionId: string, count: number): CitedCase[] =>
+const createCitedCases = (count: number): CitedCase[] =>
   Array.from({ length: count }, (_, index) => ({
-    id: `${sectionId}-case-${index + 1}`,
+    id: index + 1,
     label: `대법원 2012도 ${9338 + index}`,
   }));
 
@@ -55,11 +33,6 @@ export const CITATION_SECTIONS_MOCK: CitationSection[] = [
     id: 'cited-1',
     label: '인용된 판례',
     count: 17,
-    badge: '확정여부 미확인',
-    cases: createCitedCases('cited-1', 17),
+    cases: createCitedCases(17),
   },
-  { id: 'cited-2', label: '인용된 판례', count: 17, cases: createCitedCases('cited-2', 17) },
-  { id: 'cited-3', label: '인용된 판례', count: 17, cases: createCitedCases('cited-3', 17) },
-  { id: 'cited-4', label: '인용된 판례', count: 17, cases: createCitedCases('cited-4', 17) },
-  { id: 'cited-5', label: '인용된 판례', count: 17, cases: createCitedCases('cited-5', 17) },
 ];

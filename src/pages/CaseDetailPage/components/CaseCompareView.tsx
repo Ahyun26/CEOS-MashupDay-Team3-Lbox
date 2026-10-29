@@ -3,7 +3,7 @@ import iconXmark from '../../../assets/icons/common/icon-xmark.svg';
 import IconButton from '../../../components/common/IconButton';
 import ContentPanel from '../../../components/layout/ContentPanel';
 import ScrollPane from '../../../components/layout/ScrollPane';
-import type { CaseDetail } from '../caseDetail.mock';
+import type { CaseDetail } from '../caseDetail.types';
 import CaseDocument from './CaseDocument';
 import DocumentToolbar from './DocumentToolbar';
 import ScrollTopButton from './ScrollTopButton';
