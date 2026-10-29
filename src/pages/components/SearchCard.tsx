@@ -1,4 +1,4 @@
-import checkIcon from '../../assets/icons/icon-check.svg';
+import checkIcon from '../../assets/icons/search/icon-check.svg';
 
 interface SearchCardProps {
   court?: string;
