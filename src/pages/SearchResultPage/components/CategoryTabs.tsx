@@ -19,8 +19,11 @@ const CategoryTabs = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>('판례');
 
   return (
-    <nav aria-label="검색 자료 유형" className="search-category-tabs">
-      <ul className="flex h-full items-end">
+    <nav
+      aria-label="검색 자료 유형"
+      className="flex h-[32px] w-full shrink-0 justify-center border-b-[0.5px] border-gray-300 pt-[4px]"
+    >
+      <ul className="flex h-full w-[685px] max-w-full items-end gap-[2px] overflow-x-auto px-[16px] max-[720px]:w-full">
         {CATEGORIES.map((category) => {
           const isSelected = selectedCategory === category;
 
@@ -30,8 +33,8 @@ const CategoryTabs = () => {
                 type="button"
                 onClick={() => setSelectedCategory(category)}
                 aria-pressed={isSelected}
-                className={`flex h-full cursor-pointer items-center border-b-2 px-[0.5rem] text-[0.75rem] font-medium ${
-                  isSelected ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500'
+                className={`flex h-full cursor-pointer items-center border-b-2 px-[8px] pt-[4px] pb-[6px] text-[11px] leading-[16px] whitespace-nowrap font-medium ${
+                  isSelected ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-600'
                 }`}
               >
                 {category}
