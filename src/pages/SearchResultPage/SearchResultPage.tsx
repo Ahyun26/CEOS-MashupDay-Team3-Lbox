@@ -105,6 +105,25 @@ const SearchResultPage = () => {
     });
   };
 
+  const handleDateChange = ({
+    dateFrom,
+    dateTo,
+  }: Pick<JudgmentSearchParams, 'dateFrom' | 'dateTo'>) => {
+    if (dateFrom && dateTo && dateFrom > dateTo) return;
+    if (dateFrom === searchRequest.dateFrom && dateTo === searchRequest.dateTo) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => {
+      const next = { ...previous, page: 0 };
+      if (dateFrom) next.dateFrom = dateFrom;
+      else delete next.dateFrom;
+      if (dateTo) next.dateTo = dateTo;
+      else delete next.dateTo;
+      return next;
+    });
+  };
+
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-gray-100 font-sans tracking-[-0.2px] text-gray-900">
       <aside className="flex w-[56px] shrink-0 flex-col" aria-label="글로벌 내비게이션">
@@ -196,6 +215,9 @@ const SearchResultPage = () => {
                 onCaseTypeChange={handleCaseTypeChange}
                 court={searchRequest.court}
                 onCourtChange={handleCourtChange}
+                dateFrom={searchRequest.dateFrom}
+                dateTo={searchRequest.dateTo}
+                onDateChange={handleDateChange}
               />
               <ResultHeader
                 resultCount={searchResult?.page.totalElements ?? 0}

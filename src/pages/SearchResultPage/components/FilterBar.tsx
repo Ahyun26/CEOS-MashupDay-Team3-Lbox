@@ -12,6 +12,9 @@ interface FilterBarProps {
   onCaseTypeChange: (caseType: JudgmentSearchParams['caseType']) => void;
   court?: string;
   onCourtChange: (court: string | undefined) => void;
+  dateFrom?: string;
+  dateTo?: string;
+  onDateChange: (range: Pick<JudgmentSearchParams, 'dateFrom' | 'dateTo'>) => void;
 }
 
 const FILTERS = [
@@ -59,13 +62,40 @@ const FILTERS = [
   },
 ];
 
-const FilterBar = ({ caseType, onCaseTypeChange, court, onCourtChange }: FilterBarProps) => {
+const FilterBar = ({
+  caseType,
+  onCaseTypeChange,
+  court,
+  onCourtChange,
+  dateFrom,
+  dateTo,
+  onDateChange,
+}: FilterBarProps) => {
   const [isCourtOpen, setIsCourtOpen] = useState(false);
   const [draftCourt, setDraftCourt] = useState(court ?? '');
+  const [isDateOpen, setIsDateOpen] = useState(false);
+  const [draftDateFrom, setDraftDateFrom] = useState(dateFrom ?? '');
+  const [draftDateTo, setDraftDateTo] = useState(dateTo ?? '');
+  const isInvalidRange = Boolean(draftDateFrom && draftDateTo && draftDateFrom > draftDateTo);
+
+  const handleDateToggle = () => {
+    setDraftDateFrom(dateFrom ?? '');
+    setDraftDateTo(dateTo ?? '');
+    setIsDateOpen(!isDateOpen);
+    setIsCourtOpen(false);
+  };
+
+  const handleDateSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isInvalidRange) return;
+    onDateChange({ dateFrom: draftDateFrom || undefined, dateTo: draftDateTo || undefined });
+    setIsDateOpen(false);
+  };
 
   const handleCourtToggle = () => {
     setDraftCourt(court ?? '');
     setIsCourtOpen(!isCourtOpen);
+    setIsDateOpen(false);
   };
 
   const handleCourtSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -105,10 +135,22 @@ const FilterBar = ({ caseType, onCaseTypeChange, court, onCourtChange }: FilterB
           ) : (
             <Chip
               key={filter.id}
-              label={filter.id === 'court' && court ? `법원 · ${court}` : filter.label}
+              label={
+                filter.id === 'court' && court
+                  ? `법원 · ${court}`
+                  : filter.id === 'decisionDate' && (dateFrom || dateTo)
+                    ? `선고일 · ${dateFrom || '전체'} ~ ${dateTo || '전체'}`
+                    : filter.label
+              }
               icon={filter.icon}
               iconPosition={filter.iconPosition}
-              onClick={filter.id === 'court' ? handleCourtToggle : undefined}
+              onClick={
+                filter.id === 'court'
+                  ? handleCourtToggle
+                  : filter.id === 'decisionDate'
+                    ? handleDateToggle
+                    : undefined
+              }
             />
           ),
         )}
@@ -160,6 +202,69 @@ const FilterBar = ({ caseType, onCaseTypeChange, court, onCourtChange }: FilterB
           >
             취소
           </button>
+        </form>
+      )}
+      {isDateOpen && (
+        <form
+          onSubmit={handleDateSubmit}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') setIsDateOpen(false);
+          }}
+          className="mx-auto mt-[8px] flex w-[685px] max-w-full flex-wrap items-center gap-[6px] px-[16px] text-[11px] text-gray-900"
+        >
+          <label htmlFor="search-date-from">시작일</label>
+          <input
+            id="search-date-from"
+            type="date"
+            value={draftDateFrom}
+            max={draftDateTo || undefined}
+            onChange={(event) => setDraftDateFrom(event.target.value)}
+            aria-invalid={isInvalidRange}
+            aria-describedby={isInvalidRange ? 'search-date-error' : undefined}
+            className="min-w-0 rounded-[4px] border border-gray-300 bg-white px-[6px] py-[4px]"
+          />
+          <label htmlFor="search-date-to">종료일</label>
+          <input
+            id="search-date-to"
+            type="date"
+            value={draftDateTo}
+            min={draftDateFrom || undefined}
+            onChange={(event) => setDraftDateTo(event.target.value)}
+            aria-invalid={isInvalidRange}
+            aria-describedby={isInvalidRange ? 'search-date-error' : undefined}
+            className="min-w-0 rounded-[4px] border border-gray-300 bg-white px-[6px] py-[4px]"
+          />
+          <button
+            type="submit"
+            disabled={isInvalidRange}
+            className="cursor-pointer rounded-[4px] bg-gray-900 px-[8px] py-[4px] text-white disabled:cursor-default disabled:opacity-40"
+          >
+            적용
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setDraftDateFrom('');
+              setDraftDateTo('');
+              onDateChange({});
+              setIsDateOpen(false);
+            }}
+            className="cursor-pointer rounded-[4px] border border-gray-300 px-[8px] py-[4px]"
+          >
+            초기화
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsDateOpen(false)}
+            className="cursor-pointer px-[6px] py-[4px]"
+          >
+            취소
+          </button>
+          {isInvalidRange && (
+            <p id="search-date-error" role="alert" className="w-full text-error-600">
+              시작일은 종료일보다 늦을 수 없습니다.
+            </p>
+          )}
         </form>
       )}
     </>
