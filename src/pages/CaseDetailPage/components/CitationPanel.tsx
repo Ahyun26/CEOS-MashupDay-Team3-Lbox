@@ -6,6 +6,7 @@ import iconPen from '../../../assets/icons/panel/icon-pen.svg';
 import iconTextbox from '../../../assets/icons/panel/icon-textbox.svg';
 import iconXmark from '../../../assets/icons/common/icon-xmark.svg';
 import IconButton from '../../../components/common/IconButton';
+import { useAutoOpenPanel } from '../../../hooks/useAutoOpenPanel';
 import type { CitationSection as CitationSectionData } from '../caseDetail.types';
 import CitationSection from './CitationSection';
 
@@ -57,7 +58,7 @@ function TabIcon({ id }: { id: TabId }) {
 }
 
 function AutoOpenToggle() {
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useAutoOpenPanel();
 
   return (
     <button
@@ -65,14 +66,14 @@ function AutoOpenToggle() {
       role="switch"
       aria-checked={isOn}
       aria-label="패널 자동 열기"
-      onClick={() => setIsOn((prev) => !prev)}
+      onClick={() => setIsOn(!isOn)}
       className="flex shrink-0 cursor-pointer items-center justify-center"
     >
       <span className="-scale-y-100 rotate-180">
-        <span
-          className={`flex h-[0.60981rem] w-[1.1875rem] items-center overflow-clip rounded-full bg-gray-400 p-[0.125rem] ${isOn ? 'justify-start' : 'justify-end'}`}
-        >
-          <span className="size-[0.9375rem] shrink-0 rounded-full bg-gray-0 shadow-[0px_0px_0px_0px_rgba(0,0,0,0.04),0px_3px_8px_0px_rgba(0,0,0,0.15)]" />
+        <span className="flex h-[0.60981rem] w-[1.1875rem] items-center justify-end overflow-clip rounded-full bg-gray-400 p-[0.125rem]">
+          {isOn && (
+            <span className="size-[0.9375rem] shrink-0 rounded-full bg-gray-0 shadow-[0px_0px_0px_0px_rgba(0,0,0,0.04),0px_3px_8px_0px_rgba(0,0,0,0.15)]" />
+          )}
         </span>
       </span>
     </button>

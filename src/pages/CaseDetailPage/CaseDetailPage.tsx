@@ -5,6 +5,7 @@ import ContentPanel from '../../components/layout/ContentPanel';
 import ScrollPane from '../../components/layout/ScrollPane';
 import { useJudgmentCitations } from '../../hooks/queries/useJudgmentCitations';
 import { useJudgmentDetail } from '../../hooks/queries/useJudgmentDetail';
+import { getAutoOpenPanel } from '../../hooks/useAutoOpenPanel';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { toCaseDetail, toCitationSections } from './caseDetail.mapper';
 import CaseCompareView from './components/CaseCompareView';
@@ -39,7 +40,7 @@ function CaseDetailPage() {
 
 function JudgmentView({ judgmentId }: { judgmentId: number }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isPanelOpen, setIsPanelOpen] = useState(getAutoOpenPanel);
   const [comparedCaseId, setComparedCaseId] = useState<number | null>(null);
 
   const detail = useJudgmentDetail(judgmentId);
