@@ -51,7 +51,7 @@ const FILTERS = [
 
 const FilterBar = () => {
   return (
-    <div className="search-filter-bar">
+    <div className="mx-auto flex w-[685px] max-w-full items-center gap-[6px] overflow-x-auto px-[16px] pt-[16px] [&>button]:shrink-0 [&>button]:gap-[2px] [&>button]:border-gray-300 [&>button]:px-[6px] [&>button]:py-[2px] [&>button]:text-[11px] [&>button]:leading-[16px] [&>button]:font-normal [&>button]:text-gray-900 [&>button>img]:h-auto [&>button>img]:w-auto [&>button:last-child]:border-transparent [&>button:last-child]:bg-gray-200 [&>button:last-child]:font-medium">
       {FILTERS.map((filter) => (
         <Chip
           key={filter.id}

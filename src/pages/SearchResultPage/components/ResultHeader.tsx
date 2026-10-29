@@ -12,13 +12,15 @@ const ResultHeader = ({
   onSortClick,
 }: ResultHeaderProps) => {
   return (
-    <div className="search-result-header">
-      <p className="text-[0.75rem] text-gray-400">검색 결과 {resultCount.toLocaleString()}개</p>
+    <div className="mx-auto mt-[16px] mb-[8px] flex h-[16px] w-[685px] max-w-full items-center justify-between px-[16px]">
+      <p className="text-[14px] leading-[16px] text-gray-600">
+        검색 결과 {resultCount.toLocaleString()}개
+      </p>
 
       <button
         type="button"
         onClick={onSortClick}
-        className="flex cursor-pointer items-center gap-[0.125rem] text-[0.75rem] text-gray-400"
+        className="flex cursor-pointer items-center gap-[0.125rem] text-[14px] leading-[16px] text-gray-600"
       >
         <img src={sortIcon} alt="" />
 
