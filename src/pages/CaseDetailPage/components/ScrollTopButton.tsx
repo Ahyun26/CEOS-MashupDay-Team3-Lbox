@@ -3,7 +3,6 @@ import IconButton from '../../../components/common/IconButton';
 
 interface ScrollTopButtonProps {
   onClick: () => void;
-  /** 사이드 패널이 열리면 Figma 기준으로 오른쪽 여백이 3.5px → 13.5px로 바뀜 */
   isPanelOpen?: boolean;
 }
 
