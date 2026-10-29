@@ -25,6 +25,7 @@ const INITIAL_KEYWORD = '층간소음';
 type PageState = 'success' | 'loading' | 'empty' | 'error';
 
 const SearchResultPage = () => {
+  const [searchRequest, setSearchRequest] = useState({ keyword: INITIAL_KEYWORD });
   const [pageState, setPageState] = useState<PageState>('loading');
   const [searchResult, setSearchResult] = useState<JudgmentSearchResponse | null>(null);
 
@@ -32,7 +33,7 @@ const SearchResultPage = () => {
     const controller = new AbortController();
 
     searchJudgments(
-      { keyword: INITIAL_KEYWORD, sort: 'date,desc', page: 0, size: 20 },
+      { keyword: searchRequest.keyword, sort: 'date,desc', page: 0, size: 20 },
       controller.signal,
     )
       .then((result) => {
@@ -46,7 +47,16 @@ const SearchResultPage = () => {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [searchRequest]);
+
+  const handleSearch = (value: string) => {
+    const keyword = value.trim();
+    if (!keyword) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest({ keyword });
+  };
 
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-gray-100 font-sans tracking-[-0.2px] text-gray-900">
@@ -103,7 +113,7 @@ const SearchResultPage = () => {
             >
               <img src={backIcon} alt="" />
             </button>
-            <span>“{INITIAL_KEYWORD}” 검색</span>
+            <span>“{searchRequest.keyword}” 검색</span>
             <button type="button" aria-label="검색 작업 메뉴" className="cursor-pointer">
               <img src={dropdownIcon} alt="" />
             </button>
@@ -180,7 +190,7 @@ const SearchResultPage = () => {
               )}
             </div>
 
-            <PromptInput />
+            <PromptInput initialValue={INITIAL_KEYWORD} onSearch={handleSearch} />
           </div>
         </main>
       </div>
