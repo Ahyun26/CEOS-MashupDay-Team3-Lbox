@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom';
 import checkIcon from '../../../assets/icons/search/icon-check.svg';
 
 interface SearchCardProps {
+  judgmentId: number;
   court?: string;
   decisionDate?: string;
   caseNumber?: string;
@@ -12,6 +14,7 @@ interface SearchCardProps {
 }
 
 const SearchCard = ({
+  judgmentId,
   court = '서울중앙지방법원',
   decisionDate = '2023. 4. 13.',
   caseNumber = '2022가단5065289',
@@ -25,9 +28,12 @@ const SearchCard = ({
     <article className="min-h-[184px] w-full border-b-[0.5px] border-gray-300 px-[16px] py-[20px]">
       <div className="flex flex-col gap-[1rem]">
         <div className="flex w-[394px] max-w-full flex-col gap-[0.5rem]">
-          <p className="text-[1rem] font-medium leading-[1rem] text-purple-400">
+          <Link
+            to={`/judgments/${judgmentId}`}
+            className="cursor-pointer text-[1rem] font-medium leading-[1rem] text-purple-400"
+          >
             {court} {decisionDate} 선고 {caseNumber} 판결
-          </p>
+          </Link>
 
           <p className="text-[0.875rem] leading-[1rem] text-gray-900">[{title}]</p>
         </div>

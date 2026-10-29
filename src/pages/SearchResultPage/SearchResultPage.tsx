@@ -174,6 +174,7 @@ const SearchResultPage = () => {
                   {MOCK_SEARCH_RESULTS.map((result) => (
                     <SearchCard
                       key={result.id}
+                      judgmentId={result.id}
                       court={result.court}
                       decisionDate={result.decisionDate}
                       caseNumber={result.caseNumber}
