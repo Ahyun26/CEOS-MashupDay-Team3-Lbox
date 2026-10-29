@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { searchJudgments } from '../../api/judgments';
 import type {
   JudgmentSearchParams,
@@ -37,6 +37,9 @@ const SearchResultPage = () => {
   });
   const [pageState, setPageState] = useState<PageState>('loading');
   const [searchResult, setSearchResult] = useState<JudgmentSearchResponse | null>(null);
+  const resultsScrollRef = useRef<HTMLDivElement>(null);
+  const currentPage = searchRequest.page ?? 0;
+  const totalPages = searchResult?.page.totalPages ?? 0;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -124,6 +127,21 @@ const SearchResultPage = () => {
     });
   };
 
+  const handlePageChange = (page: number) => {
+    if (
+      pageState === 'loading' ||
+      !Number.isInteger(page) ||
+      page < 0 ||
+      page >= totalPages ||
+      page === currentPage
+    )
+      return;
+
+    setPageState('loading');
+    setSearchRequest((previous) => ({ ...previous, page }));
+    resultsScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  };
+
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-gray-100 font-sans tracking-[-0.2px] text-gray-900">
       <aside className="flex w-[56px] shrink-0 flex-col" aria-label="글로벌 내비게이션">
@@ -209,7 +227,10 @@ const SearchResultPage = () => {
           <div className="relative flex min-h-0 w-full flex-col items-center">
             <CategoryTabs />
 
-            <div className="min-h-0 w-full flex-1 overflow-y-auto pb-[132px] [scrollbar-gutter:stable_both-edges]">
+            <div
+              ref={resultsScrollRef}
+              className="min-h-0 w-full flex-1 overflow-y-auto pb-[132px] [scrollbar-gutter:stable_both-edges]"
+            >
               <FilterBar
                 caseType={searchRequest.caseType}
                 onCaseTypeChange={handleCaseTypeChange}
@@ -262,6 +283,32 @@ const SearchResultPage = () => {
                     />
                   ))}
                 </section>
+              )}
+              {totalPages > 0 && pageState !== 'empty' && (
+                <nav
+                  aria-label="검색 결과 페이지"
+                  className="mx-auto flex w-[694px] max-w-full items-center justify-center gap-[16px] px-[16px] py-[20px] text-[12px] text-gray-600"
+                >
+                  <button
+                    type="button"
+                    disabled={pageState === 'loading' || currentPage === 0}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className="cursor-pointer rounded-[4px] border border-gray-300 px-[8px] py-[4px] disabled:cursor-default disabled:opacity-40"
+                  >
+                    이전
+                  </button>
+                  <span aria-live="polite">
+                    {currentPage + 1} / {totalPages}
+                  </span>
+                  <button
+                    type="button"
+                    disabled={pageState === 'loading' || currentPage >= totalPages - 1}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className="cursor-pointer rounded-[4px] border border-gray-300 px-[8px] py-[4px] disabled:cursor-default disabled:opacity-40"
+                  >
+                    다음
+                  </button>
+                </nav>
               )}
             </div>
 
