@@ -84,9 +84,10 @@ interface CitationPanelProps {
   caseName: string;
   sections: CitationSectionData[];
   onClose: () => void;
+  onSelectCase?: (caseId: string) => void;
 }
 
-function CitationPanel({ title, caseName, sections, onClose }: CitationPanelProps) {
+function CitationPanel({ title, caseName, sections, onClose, onSelectCase }: CitationPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('detail');
 
   return (
@@ -94,7 +95,7 @@ function CitationPanel({ title, caseName, sections, onClose }: CitationPanelProp
       aria-label="판례 패널"
       className="flex h-full w-[17.375rem] shrink-0 flex-col items-start border-l border-(--color-border-default)"
     >
-      <div className="flex w-full shrink-0 flex-col items-start gap-px">
+      <div className="flex min-h-0 w-full flex-col items-start gap-px">
         <div className="flex w-full shrink-0 flex-col items-start gap-16 rounded-tr-md border-b border-(--color-border-default) bg-(--color-surface-default) p-12">
           <div className="flex w-[15.875rem] items-start gap-24">
             <div className="flex min-w-px flex-[1_0_0] flex-col items-start gap-4 self-stretch">
@@ -137,9 +138,9 @@ function CitationPanel({ title, caseName, sections, onClose }: CitationPanelProp
           </div>
         </div>
 
-        <div className="flex w-full shrink-0 flex-col items-start">
+        <div className="flex min-h-0 w-full flex-col items-start overflow-y-auto [scrollbar-width:none]">
           {sections.map(({ id, ...section }) => (
-            <CitationSection key={id} {...section} />
+            <CitationSection key={id} {...section} onSelectCase={onSelectCase} />
           ))}
         </div>
       </div>
