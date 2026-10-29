@@ -3,7 +3,7 @@ import iconChart from '../../../assets/icons/panel/icon-chart.svg';
 import iconClosedBook from '../../../assets/icons/panel/icon-closed-book.svg';
 import iconPen from '../../../assets/icons/panel/icon-pen.svg';
 import iconTextbox from '../../../assets/icons/panel/icon-textbox.svg';
-import iconXmark from '../../../assets/icons/panel/icon-xmark.svg';
+import iconXmark from '../../../assets/icons/common/icon-xmark.svg';
 import IconButton from '../../../components/common/IconButton';
 import type { CitationSection as CitationSectionData } from '../caseDetail.mock';
 import CitationSection from './CitationSection';

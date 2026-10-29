@@ -27,6 +27,9 @@ export const CASE_DETAIL_MOCK: CaseDetail = {
   ],
 };
 
+// TODO: GET /judgments/{citationId} 연동 후 제거 (지금은 어떤 인용 판례를 골라도 같은 내용)
+export const CITED_CASE_DETAIL_MOCK: CaseDetail = CASE_DETAIL_MOCK;
+
 export interface CitedCase {
   id: string;
   label: string;
