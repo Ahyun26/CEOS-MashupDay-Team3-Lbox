@@ -72,6 +72,22 @@ const SearchResultPage = () => {
     setSearchRequest((previous) => ({ ...previous, sort, page: 0 }));
   };
 
+  const handleCaseTypeChange = (caseType: JudgmentSearchParams['caseType']) => {
+    if (caseType === searchRequest.caseType) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => {
+      const next = { ...previous, page: 0 };
+      if (caseType) {
+        next.caseType = caseType;
+      } else {
+        delete next.caseType;
+      }
+      return next;
+    });
+  };
+
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-gray-100 font-sans tracking-[-0.2px] text-gray-900">
       <aside className="flex w-[56px] shrink-0 flex-col" aria-label="글로벌 내비게이션">
@@ -158,7 +174,10 @@ const SearchResultPage = () => {
             <CategoryTabs />
 
             <div className="min-h-0 w-full flex-1 overflow-y-auto pb-[132px] [scrollbar-gutter:stable_both-edges]">
-              <FilterBar />
+              <FilterBar
+                caseType={searchRequest.caseType}
+                onCaseTypeChange={handleCaseTypeChange}
+              />
               <ResultHeader
                 resultCount={searchResult?.page.totalElements ?? 0}
                 sort={searchRequest.sort ?? 'date,desc'}
