@@ -280,6 +280,7 @@ const SearchResultPage = () => {
                     <SearchCard
                       key={result.id}
                       judgmentId={result.id}
+                      keyword={searchRequest.keyword}
                       court={result.court}
                       decisionDate={
                         result.judgmentDate ? `${result.judgmentDate.replaceAll('-', '. ')}.` : ''
