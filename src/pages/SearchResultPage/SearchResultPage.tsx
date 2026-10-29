@@ -88,6 +88,23 @@ const SearchResultPage = () => {
     });
   };
 
+  const handleCourtChange = (value: string | undefined) => {
+    const court = value?.trim() || undefined;
+    if (court === searchRequest.court) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => {
+      const next = { ...previous, page: 0 };
+      if (court) {
+        next.court = court;
+      } else {
+        delete next.court;
+      }
+      return next;
+    });
+  };
+
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-gray-100 font-sans tracking-[-0.2px] text-gray-900">
       <aside className="flex w-[56px] shrink-0 flex-col" aria-label="글로벌 내비게이션">
@@ -177,6 +194,8 @@ const SearchResultPage = () => {
               <FilterBar
                 caseType={searchRequest.caseType}
                 onCaseTypeChange={handleCaseTypeChange}
+                court={searchRequest.court}
+                onCourtChange={handleCourtChange}
               />
               <ResultHeader
                 resultCount={searchResult?.page.totalElements ?? 0}
