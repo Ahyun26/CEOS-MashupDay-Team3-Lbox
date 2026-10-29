@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import archiveIcon from '../../assets/icons/search/icon-archive-black.svg';
-import arrowIcon from '../../assets/icons/common/icon-arrow.svg';
-import editIcon from '../../assets/icons/search/icon-edit.svg';
-import plusIcon from '../../assets/icons/search/icon-plus.svg';
-import searchIcon from '../../assets/icons/search/icon-search.svg';
-import starIcon from '../../assets/icons/search/icon-star.svg';
-import Icon from '../../components/common/Icon';
+import archiveIcon from '../../../assets/icons/search/icon-archive-black.svg';
+import arrowIcon from '../../../assets/icons/common/icon-arrow.svg';
+import editIcon from '../../../assets/icons/search/icon-edit.svg';
+import plusIcon from '../../../assets/icons/search/icon-plus.svg';
+import searchIcon from '../../../assets/icons/search/icon-search.svg';
+import starIcon from '../../../assets/icons/search/icon-star.svg';
+import Icon from '../../../components/common/Icon';
 
 const PromptInput = () => {
   const [prompt, setPrompt] = useState('');

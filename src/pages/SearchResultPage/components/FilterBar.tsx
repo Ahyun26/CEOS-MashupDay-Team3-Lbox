@@ -1,8 +1,8 @@
-import bellIcon from '../../assets/icons/search/icon-bell.svg';
-import dropdownIcon from '../../assets/icons/common/icon-dropdown.svg';
-import searchIcon from '../../assets/icons/search/icon-search.svg';
+import bellIcon from '../../../assets/icons/search/icon-bell.svg';
+import dropdownIcon from '../../../assets/icons/common/icon-dropdown.svg';
+import searchIcon from '../../../assets/icons/search/icon-search.svg';
 
-import Chip from '../../components/common/Chip';
+import Chip from '../../../components/common/Chip';
 
 const FILTERS = [
   {

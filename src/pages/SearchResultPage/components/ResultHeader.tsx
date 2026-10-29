@@ -1,4 +1,4 @@
-import sortIcon from '../../assets/icons/search/icon-sort.svg';
+import sortIcon from '../../../assets/icons/search/icon-sort.svg';
 
 interface ResultHeaderProps {
   resultCount?: number;
