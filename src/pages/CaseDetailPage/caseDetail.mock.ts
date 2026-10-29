@@ -27,18 +27,36 @@ export const CASE_DETAIL_MOCK: CaseDetail = {
   ],
 };
 
+export interface CitedCase {
+  id: string;
+  label: string;
+}
+
 export interface CitationSection {
   id: string;
   label: string;
   count: number;
   badge?: string;
+  cases: CitedCase[];
 }
+
+const createCitedCases = (sectionId: string, count: number): CitedCase[] =>
+  Array.from({ length: count }, (_, index) => ({
+    id: `${sectionId}-case-${index + 1}`,
+    label: `대법원 2012도 ${9338 + index}`,
+  }));
 
 // TODO: GET /judgments/{judgmentId}/citations 연동 후 제거
 export const CITATION_SECTIONS_MOCK: CitationSection[] = [
-  { id: 'cited-1', label: '인용된 판례', count: 17, badge: '확정여부 미확인' },
-  { id: 'cited-2', label: '인용된 판례', count: 17 },
-  { id: 'cited-3', label: '인용된 판례', count: 17 },
-  { id: 'cited-4', label: '인용된 판례', count: 17 },
-  { id: 'cited-5', label: '인용된 판례', count: 17 },
+  {
+    id: 'cited-1',
+    label: '인용된 판례',
+    count: 17,
+    badge: '확정여부 미확인',
+    cases: createCitedCases('cited-1', 17),
+  },
+  { id: 'cited-2', label: '인용된 판례', count: 17, cases: createCitedCases('cited-2', 17) },
+  { id: 'cited-3', label: '인용된 판례', count: 17, cases: createCitedCases('cited-3', 17) },
+  { id: 'cited-4', label: '인용된 판례', count: 17, cases: createCitedCases('cited-4', 17) },
+  { id: 'cited-5', label: '인용된 판례', count: 17, cases: createCitedCases('cited-5', 17) },
 ];
