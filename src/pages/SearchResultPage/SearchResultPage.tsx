@@ -24,7 +24,7 @@ import PromptInput from './components/PromptInput';
 import ResultHeader from './components/ResultHeader';
 import SearchCard from './components/SearchCard';
 
-const INITIAL_KEYWORD = '층간소음';
+const INITIAL_KEYWORD = '';
 
 type PageState = 'success' | 'loading' | 'empty' | 'error';
 
@@ -41,7 +41,11 @@ const SearchResultPage = () => {
   const currentPage = searchRequest.page ?? 0;
   const totalPages = searchResult?.page.totalPages ?? 0;
 
+  const hasKeyword = searchRequest.keyword !== '';
+
   useEffect(() => {
+    if (!searchRequest.keyword) return;
+
     const controller = new AbortController();
 
     searchJudgments(searchRequest, controller.signal)
@@ -197,7 +201,7 @@ const SearchResultPage = () => {
             >
               <img src={backIcon} alt="" />
             </button>
-            <span>“{searchRequest.keyword}” 검색</span>
+            <span>{hasKeyword ? `“${searchRequest.keyword}” 검색` : '검색어를 입력해주세요'}</span>
             <button type="button" aria-label="검색 작업 메뉴" className="cursor-pointer">
               <img src={dropdownIcon} alt="" />
             </button>
@@ -246,25 +250,31 @@ const SearchResultPage = () => {
                 onSortChange={handleSortChange}
               />
 
-              {pageState === 'loading' && (
+              {!hasKeyword && (
+                <div className="py-[3rem] text-center text-[0.875rem] text-gray-500">
+                  검색어를 입력해주세요.
+                </div>
+              )}
+
+              {hasKeyword && pageState === 'loading' && (
                 <div className="py-[3rem] text-center text-[0.875rem] text-gray-500">
                   검색 결과를 불러오는 중입니다.
                 </div>
               )}
 
-              {pageState === 'empty' && (
+              {hasKeyword && pageState === 'empty' && (
                 <div className="py-[3rem] text-center text-[0.875rem] text-gray-500">
                   검색 결과가 없습니다.
                 </div>
               )}
 
-              {pageState === 'error' && (
+              {hasKeyword && pageState === 'error' && (
                 <div className="py-[3rem] text-center text-[0.875rem] text-gray-500">
                   검색 결과를 불러오지 못했습니다.
                 </div>
               )}
 
-              {pageState === 'success' && (
+              {hasKeyword && pageState === 'success' && (
                 <section className="mx-auto flex w-[694px] max-w-full flex-col gap-[4px]">
                   {searchResult?.content.map((result) => (
                     <SearchCard

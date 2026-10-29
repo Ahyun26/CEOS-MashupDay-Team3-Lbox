@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import iconDropdown from '../../assets/icons/topbar/icon-dropdown-filled.svg';
 import iconInfo from '../../assets/icons/topbar/icon-info.svg';
 import iconLayer from '../../assets/icons/topbar/icon-layer-20.svg';
@@ -32,15 +33,25 @@ function ReferenceBadge({ count }: ReferenceBadgeProps) {
 
 interface TopBarProps {
   title: string;
-  onBack?: () => void;
 }
 
-function TopBar({ title, onBack }: TopBarProps) {
+function TopBar({ title }: TopBarProps) {
+  const navigate = useNavigate();
+  const { key } = useLocation();
+
+  const goBack = () => {
+    if (key === 'default') {
+      navigate('/');
+      return;
+    }
+    navigate(-1);
+  };
+
   return (
     <header className="flex h-[2.5rem] w-full shrink-0 items-center justify-between bg-gray-100 px-[1.25rem] py-8">
       <div className="flex shrink-0 items-start gap-[0.125rem]">
         <div className="flex shrink-0 items-center gap-16">
-          <IconButton label="뒤로가기" onClick={onBack} className="size-[1.25rem]">
+          <IconButton label="뒤로가기" onClick={goBack} className="size-[1.25rem]">
             <img
               src={iconArrowLeft}
               alt=""
