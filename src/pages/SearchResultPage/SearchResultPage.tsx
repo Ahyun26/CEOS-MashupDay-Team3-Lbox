@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { searchJudgments } from '../../api/judgments';
+import type {
+  JudgmentSearchParams,
+  JudgmentSearchResponse,
+  JudgmentSearchSort,
+} from '../../types/judgment';
 import navigationTop from '../../assets/icons/sidebar/icon-navigation-top.svg';
 import bookIcon from '../../assets/icons/sidebar/icon-open-book.svg';
 import columnIcon from '../../assets/icons/sidebar/icon-column.svg';
@@ -18,49 +24,123 @@ import PromptInput from './components/PromptInput';
 import ResultHeader from './components/ResultHeader';
 import SearchCard from './components/SearchCard';
 
-const MOCK_SEARCH_RESULTS = [
-  {
-    id: 1,
-    court: '서울중앙지방법원',
-    decisionDate: '2023. 4. 13.',
-    caseNumber: '2022가단5065289',
-    title: '층간소음으로인한위자료청구의건',
-    preview:
-      '제정, 이하 ‘구규칙’이라 한다) 제3조 [별표]에 따르면 이 사건 아파트의 경우 그 층간 소음 기준이 1분간 등가소음도 43dB(주간), 38dB(야간)로서, 한국환경공단 층간소음 이웃사이센터에 의한 소음진동측정결과표에 의하면...',
-    resultLabel: '원고일부승',
-    categoryLabel: '청구취지',
-    views: 859,
-  },
-  {
-    id: 2,
-    court: '서울중앙지방법원',
-    decisionDate: '2023. 4. 13.',
-    caseNumber: '2022가단5065289',
-    title: '층간소음으로인한위자료청구의건',
-    preview:
-      '제정, 이하 ‘구규칙’이라 한다) 제3조 [별표]에 따르면 이 사건 아파트의 경우 그 층간 소음 기준이 1분간 등가소음도 43dB(주간), 38dB(야간)로서, 한국환경공단 층간소음 이웃사이센터에 의한 소음진동측정결과표에 의하면...',
-    resultLabel: '원고일부승',
-    categoryLabel: '청구취지',
-    views: 859,
-  },
-  {
-    id: 3,
-    court: '서울중앙지방법원',
-    decisionDate: '2023. 4. 13.',
-    caseNumber: '2022가단5065289',
-    title: '층간소음으로인한위자료청구의건',
-    preview:
-      '제정, 이하 ‘구규칙’이라 한다) 제3조 [별표]에 따르면 이 사건 아파트의 경우 그 층간 소음 기준이 1분간 등가소음도 43dB(주간), 38dB(야간)로서, 한국환경공단 층간소음 이웃사이센터에 의한 소음진동측정결과표에 의하면...',
-    resultLabel: '원고일부승',
-    categoryLabel: '청구취지',
-    views: 859,
-  },
-];
+const INITIAL_KEYWORD = '층간소음';
 
 type PageState = 'success' | 'loading' | 'empty' | 'error';
 
 const SearchResultPage = () => {
-  const [pageState] = useState<PageState>('success');
+  const [searchRequest, setSearchRequest] = useState<JudgmentSearchParams>({
+    keyword: INITIAL_KEYWORD,
+    sort: 'date,desc',
+    page: 0,
+    size: 20,
+  });
+  const [pageState, setPageState] = useState<PageState>('loading');
+  const [searchResult, setSearchResult] = useState<JudgmentSearchResponse | null>(null);
+  const resultsScrollRef = useRef<HTMLDivElement>(null);
+  const currentPage = searchRequest.page ?? 0;
+  const totalPages = searchResult?.page.totalPages ?? 0;
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    searchJudgments(searchRequest, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return;
+        setSearchResult(result);
+        setPageState(result.content.length > 0 ? 'success' : 'empty');
+      })
+      .catch(() => {
+        if (controller.signal.aborted) return;
+        setPageState('error');
+      });
+
+    return () => controller.abort();
+  }, [searchRequest]);
+
+  const handleSearch = (value: string) => {
+    const keyword = value.trim();
+    if (!keyword) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => ({ ...previous, keyword, page: 0 }));
+  };
+
+  const handleSortChange = (sort: JudgmentSearchSort) => {
+    if (sort === searchRequest.sort) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => ({ ...previous, sort, page: 0 }));
+  };
+
+  const handleCaseTypeChange = (caseType: JudgmentSearchParams['caseType']) => {
+    if (caseType === searchRequest.caseType) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => {
+      const next = { ...previous, page: 0 };
+      if (caseType) {
+        next.caseType = caseType;
+      } else {
+        delete next.caseType;
+      }
+      return next;
+    });
+  };
+
+  const handleCourtChange = (value: string | undefined) => {
+    const court = value?.trim() || undefined;
+    if (court === searchRequest.court) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => {
+      const next = { ...previous, page: 0 };
+      if (court) {
+        next.court = court;
+      } else {
+        delete next.court;
+      }
+      return next;
+    });
+  };
+
+  const handleDateChange = ({
+    dateFrom,
+    dateTo,
+  }: Pick<JudgmentSearchParams, 'dateFrom' | 'dateTo'>) => {
+    if (dateFrom && dateTo && dateFrom > dateTo) return;
+    if (dateFrom === searchRequest.dateFrom && dateTo === searchRequest.dateTo) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => {
+      const next = { ...previous, page: 0 };
+      if (dateFrom) next.dateFrom = dateFrom;
+      else delete next.dateFrom;
+      if (dateTo) next.dateTo = dateTo;
+      else delete next.dateTo;
+      return next;
+    });
+  };
+
+  const handlePageChange = (page: number) => {
+    if (
+      pageState === 'loading' ||
+      !Number.isInteger(page) ||
+      page < 0 ||
+      page >= totalPages ||
+      page === currentPage
+    )
+      return;
+
+    setPageState('loading');
+    setSearchRequest((previous) => ({ ...previous, page }));
+    resultsScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  };
 
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-gray-100 font-sans tracking-[-0.2px] text-gray-900">
@@ -117,7 +197,7 @@ const SearchResultPage = () => {
             >
               <img src={backIcon} alt="" />
             </button>
-            <span>“층간소음” 검색</span>
+            <span>“{searchRequest.keyword}” 검색</span>
             <button type="button" aria-label="검색 작업 메뉴" className="cursor-pointer">
               <img src={dropdownIcon} alt="" />
             </button>
@@ -147,9 +227,24 @@ const SearchResultPage = () => {
           <div className="relative flex min-h-0 w-full flex-col items-center">
             <CategoryTabs />
 
-            <div className="min-h-0 w-full flex-1 overflow-y-auto pb-[132px] [scrollbar-gutter:stable_both-edges]">
-              <FilterBar />
-              <ResultHeader resultCount={3798} />
+            <div
+              ref={resultsScrollRef}
+              className="min-h-0 w-full flex-1 overflow-y-auto pb-[132px] [scrollbar-gutter:stable_both-edges]"
+            >
+              <FilterBar
+                caseType={searchRequest.caseType}
+                onCaseTypeChange={handleCaseTypeChange}
+                court={searchRequest.court}
+                onCourtChange={handleCourtChange}
+                dateFrom={searchRequest.dateFrom}
+                dateTo={searchRequest.dateTo}
+                onDateChange={handleDateChange}
+              />
+              <ResultHeader
+                resultCount={searchResult?.page.totalElements ?? 0}
+                sort={searchRequest.sort ?? 'date,desc'}
+                onSortChange={handleSortChange}
+              />
 
               {pageState === 'loading' && (
                 <div className="py-[3rem] text-center text-[0.875rem] text-gray-500">
@@ -171,25 +266,53 @@ const SearchResultPage = () => {
 
               {pageState === 'success' && (
                 <section className="mx-auto flex w-[694px] max-w-full flex-col gap-[4px]">
-                  {MOCK_SEARCH_RESULTS.map((result) => (
+                  {searchResult?.content.map((result) => (
                     <SearchCard
                       key={result.id}
                       judgmentId={result.id}
                       court={result.court}
-                      decisionDate={result.decisionDate}
+                      decisionDate={
+                        result.judgmentDate ? `${result.judgmentDate.replaceAll('-', '. ')}.` : ''
+                      }
                       caseNumber={result.caseNumber}
-                      title={result.title}
-                      preview={result.preview}
-                      resultLabel={result.resultLabel}
-                      categoryLabel={result.categoryLabel}
-                      views={result.views}
+                      title={result.caseName ?? ''}
+                      preview={result.excerpt ?? ''}
+                      resultLabel={result.resultType ?? ''}
+                      categoryLabel={result.claimPurpose ?? ''}
+                      views={result.viewCount ?? 0}
                     />
                   ))}
                 </section>
               )}
+              {totalPages > 0 && pageState !== 'empty' && (
+                <nav
+                  aria-label="검색 결과 페이지"
+                  className="mx-auto flex w-[694px] max-w-full items-center justify-center gap-[16px] px-[16px] py-[20px] text-[12px] text-gray-600"
+                >
+                  <button
+                    type="button"
+                    disabled={pageState === 'loading' || currentPage === 0}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className="cursor-pointer rounded-[4px] border border-gray-300 px-[8px] py-[4px] disabled:cursor-default disabled:opacity-40"
+                  >
+                    이전
+                  </button>
+                  <span aria-live="polite">
+                    {currentPage + 1} / {totalPages}
+                  </span>
+                  <button
+                    type="button"
+                    disabled={pageState === 'loading' || currentPage >= totalPages - 1}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className="cursor-pointer rounded-[4px] border border-gray-300 px-[8px] py-[4px] disabled:cursor-default disabled:opacity-40"
+                  >
+                    다음
+                  </button>
+                </nav>
+              )}
             </div>
 
-            <PromptInput />
+            <PromptInput initialValue={INITIAL_KEYWORD} onSearch={handleSearch} />
           </div>
         </main>
       </div>
