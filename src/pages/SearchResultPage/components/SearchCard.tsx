@@ -3,6 +3,7 @@ import checkIcon from '../../../assets/icons/search/icon-check.svg';
 
 interface SearchCardProps {
   judgmentId: number;
+  keyword?: string;
   court?: string;
   decisionDate?: string;
   caseNumber?: string;
@@ -15,6 +16,7 @@ interface SearchCardProps {
 
 const SearchCard = ({
   judgmentId,
+  keyword = '',
   court = '서울중앙지방법원',
   decisionDate = '2023. 4. 13.',
   caseNumber = '2022가단5065289',
@@ -29,7 +31,10 @@ const SearchCard = ({
       <div className="flex flex-col gap-[1rem]">
         <div className="flex w-[394px] max-w-full flex-col gap-[0.5rem]">
           <Link
-            to={`/judgments/${judgmentId}`}
+            to={{
+              pathname: `/judgments/${judgmentId}`,
+              search: keyword ? `?${new URLSearchParams({ keyword })}` : '',
+            }}
             className="cursor-pointer text-[1rem] font-medium leading-[1rem] text-purple-400"
           >
             {court} {decisionDate} 선고 {caseNumber} 판결

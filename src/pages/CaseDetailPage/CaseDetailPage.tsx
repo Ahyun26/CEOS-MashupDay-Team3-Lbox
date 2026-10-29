@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import AppLayout from '../../components/layout/AppLayout';
 import ContentPanel from '../../components/layout/ContentPanel';
 import ScrollPane from '../../components/layout/ScrollPane';
@@ -14,9 +14,6 @@ import CitationPanel from './components/CitationPanel';
 import DocumentToolbar from './components/DocumentToolbar';
 import PaneMessage from './components/PaneMessage';
 import ScrollTopButton from './components/ScrollTopButton';
-
-// TODO: 검색어를 받아오면 교체
-const TOP_BAR_TITLE = '검색어를 입력해주세요';
 
 /** 주소의 id가 양의 정수가 아니면 null */
 const parseJudgmentId = (value: string | undefined) => {
@@ -40,6 +37,8 @@ function CaseDetailPage() {
 
 function JudgmentView({ judgmentId }: { judgmentId: number }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get('keyword')?.trim() ?? '';
   const [isPanelOpen, setIsPanelOpen] = useState(getAutoOpenPanel);
   const [comparedCaseId, setComparedCaseId] = useState<number | null>(null);
 
@@ -125,7 +124,9 @@ function JudgmentView({ judgmentId }: { judgmentId: number }) {
     );
   }
 
-  return <AppLayout title={TOP_BAR_TITLE}>{content}</AppLayout>;
+  const title = keyword ? `“${keyword}” 검색` : '검색어를 입력해주세요';
+
+  return <AppLayout title={title}>{content}</AppLayout>;
 }
 
 export default CaseDetailPage;
