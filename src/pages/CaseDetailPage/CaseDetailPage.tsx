@@ -16,7 +16,7 @@ import PaneMessage from './components/PaneMessage';
 import ScrollTopButton from './components/ScrollTopButton';
 
 // TODO: 검색어를 받아오면 교체
-const TOP_BAR_TITLE = '“층간소음" 검색';
+const TOP_BAR_TITLE = '검색어를 입력해주세요';
 
 /** 주소의 id가 양의 정수가 아니면 null */
 const parseJudgmentId = (value: string | undefined) => {

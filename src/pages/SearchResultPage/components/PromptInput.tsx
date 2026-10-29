@@ -44,7 +44,7 @@ const PromptInput = ({ initialValue, onSearch }: PromptInputProps) => {
               event.preventDefault();
             }
           }}
-          placeholder="층간소음"
+          placeholder="검색어를 입력해주세요"
           aria-label="검색어 입력"
           className="w-full bg-transparent text-[16px] leading-[16px] text-gray-900 outline-none placeholder:text-gray-900"
         />
