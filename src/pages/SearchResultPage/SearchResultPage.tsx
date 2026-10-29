@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { searchJudgments } from '../../api/judgments';
-import type { JudgmentSearchResponse } from '../../types/judgment';
+import type {
+  JudgmentSearchParams,
+  JudgmentSearchResponse,
+  JudgmentSearchSort,
+} from '../../types/judgment';
 import navigationTop from '../../assets/icons/sidebar/icon-navigation-top.svg';
 import bookIcon from '../../assets/icons/sidebar/icon-open-book.svg';
 import columnIcon from '../../assets/icons/sidebar/icon-column.svg';
@@ -25,17 +29,19 @@ const INITIAL_KEYWORD = '층간소음';
 type PageState = 'success' | 'loading' | 'empty' | 'error';
 
 const SearchResultPage = () => {
-  const [searchRequest, setSearchRequest] = useState({ keyword: INITIAL_KEYWORD });
+  const [searchRequest, setSearchRequest] = useState<JudgmentSearchParams>({
+    keyword: INITIAL_KEYWORD,
+    sort: 'date,desc',
+    page: 0,
+    size: 20,
+  });
   const [pageState, setPageState] = useState<PageState>('loading');
   const [searchResult, setSearchResult] = useState<JudgmentSearchResponse | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    searchJudgments(
-      { keyword: searchRequest.keyword, sort: 'date,desc', page: 0, size: 20 },
-      controller.signal,
-    )
+    searchJudgments(searchRequest, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return;
         setSearchResult(result);
@@ -55,7 +61,15 @@ const SearchResultPage = () => {
 
     setPageState('loading');
     setSearchResult(null);
-    setSearchRequest({ keyword });
+    setSearchRequest((previous) => ({ ...previous, keyword, page: 0 }));
+  };
+
+  const handleSortChange = (sort: JudgmentSearchSort) => {
+    if (sort === searchRequest.sort) return;
+
+    setPageState('loading');
+    setSearchResult(null);
+    setSearchRequest((previous) => ({ ...previous, sort, page: 0 }));
   };
 
   return (
@@ -147,7 +161,8 @@ const SearchResultPage = () => {
               <FilterBar />
               <ResultHeader
                 resultCount={searchResult?.page.totalElements ?? 0}
-                sortLabel="선고일순"
+                sort={searchRequest.sort ?? 'date,desc'}
+                onSortChange={handleSortChange}
               />
 
               {pageState === 'loading' && (

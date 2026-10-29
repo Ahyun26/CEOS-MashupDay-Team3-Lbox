@@ -1,3 +1,5 @@
+export type JudgmentSearchSort = 'date,desc' | 'viewCount,desc';
+
 export interface JudgmentSearchParams {
   keyword: string;
   caseType?: 'CIVIL' | 'CRIMINAL' | 'ADMINISTRATIVE';
@@ -7,7 +9,7 @@ export interface JudgmentSearchParams {
   /** YYYY-MM-DD */
   dateTo?: string;
   /** 서버 기본값: date,desc */
-  sort?: string;
+  sort?: JudgmentSearchSort;
   /** 0부터 시작하는 페이지 번호 */
   page?: number;
   size?: number;
