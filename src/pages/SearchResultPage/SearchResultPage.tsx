@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { searchJudgments } from '../../api/judgments';
 import type {
   JudgmentSearchParams,
@@ -24,17 +25,48 @@ import PromptInput from './components/PromptInput';
 import ResultHeader from './components/ResultHeader';
 import SearchCard from './components/SearchCard';
 
-const INITIAL_KEYWORD = '';
+const SORTS: JudgmentSearchSort[] = ['date,desc', 'viewCount,desc'];
+const CASE_TYPES = ['CIVIL', 'CRIMINAL', 'ADMINISTRATIVE'] as const;
+const URL_KEYS = ['keyword', 'caseType', 'court', 'dateFrom', 'dateTo', 'sort', 'page'] as const;
+
+const toSearchRequest = (params: URLSearchParams): JudgmentSearchParams => {
+  const request: JudgmentSearchParams = {
+    keyword: params.get('keyword')?.trim() ?? '',
+    sort: SORTS.find((sort) => sort === params.get('sort')) ?? 'date,desc',
+    page: Math.max(0, Number.parseInt(params.get('page') ?? '', 10) || 0),
+    size: 20,
+  };
+
+  const caseType = CASE_TYPES.find((type) => type === params.get('caseType'));
+  const court = params.get('court')?.trim();
+  const dateFrom = params.get('dateFrom');
+  const dateTo = params.get('dateTo');
+
+  if (caseType) request.caseType = caseType;
+  if (court) request.court = court;
+  if (dateFrom) request.dateFrom = dateFrom;
+  if (dateTo) request.dateTo = dateTo;
+
+  return request;
+};
+
+const toUrlParams = (request: JudgmentSearchParams) => {
+  const params = new URLSearchParams();
+  for (const key of URL_KEYS) {
+    const value = request[key];
+    if (value !== undefined && value !== '') params.set(key, String(value));
+  }
+  return params;
+};
 
 type PageState = 'success' | 'loading' | 'empty' | 'error';
 
 const SearchResultPage = () => {
-  const [searchRequest, setSearchRequest] = useState<JudgmentSearchParams>({
-    keyword: INITIAL_KEYWORD,
-    sort: 'date,desc',
-    page: 0,
-    size: 20,
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchRequest = useMemo(() => toSearchRequest(searchParams), [searchParams]);
+  const setSearchRequest = (update: (previous: JudgmentSearchParams) => JudgmentSearchParams) => {
+    setSearchParams(toUrlParams(update(searchRequest)), { replace: true });
+  };
   const [pageState, setPageState] = useState<PageState>('loading');
   const [searchResult, setSearchResult] = useState<JudgmentSearchResponse | null>(null);
   const resultsScrollRef = useRef<HTMLDivElement>(null);
@@ -323,7 +355,7 @@ const SearchResultPage = () => {
               )}
             </div>
 
-            <PromptInput initialValue={INITIAL_KEYWORD} onSearch={handleSearch} />
+            <PromptInput initialValue={searchRequest.keyword} onSearch={handleSearch} />
           </div>
         </main>
       </div>
