@@ -1,3 +1,4 @@
+import type { QueryStatus } from '@tanstack/react-query';
 import { useState } from 'react';
 import iconChart from '../../../assets/icons/panel/icon-chart.svg';
 import iconClosedBook from '../../../assets/icons/panel/icon-closed-book.svg';
@@ -18,7 +19,6 @@ const TABS = [
 type TabId = (typeof TABS)[number]['id'];
 
 function TabIcon({ id }: { id: TabId }) {
-  // 아이콘마다 Figma에서 20px 칸 안의 위치가 달라서 그대로 맞춤
   if (id === 'outline') {
     return (
       <span className="relative block size-[1.25rem] shrink-0 overflow-clip">
@@ -83,11 +83,19 @@ interface CitationPanelProps {
   title: string;
   caseName: string;
   sections: CitationSectionData[];
+  citationsStatus: QueryStatus;
   onClose: () => void;
   onSelectCase?: (caseId: number) => void;
 }
 
-function CitationPanel({ title, caseName, sections, onClose, onSelectCase }: CitationPanelProps) {
+function CitationPanel({
+  title,
+  caseName,
+  sections,
+  citationsStatus,
+  onClose,
+  onSelectCase,
+}: CitationPanelProps) {
   const [activeTab, setActiveTab] = useState<TabId>('detail');
 
   return (
@@ -139,9 +147,17 @@ function CitationPanel({ title, caseName, sections, onClose, onSelectCase }: Cit
         </div>
 
         <div className="flex min-h-0 w-full flex-col items-start overflow-y-auto [scrollbar-width:none]">
-          {sections.map(({ id, ...section }) => (
-            <CitationSection key={id} {...section} onSelectCase={onSelectCase} />
-          ))}
+          {citationsStatus === 'success' ? (
+            sections.map(({ id, ...section }) => (
+              <CitationSection key={id} {...section} onSelectCase={onSelectCase} />
+            ))
+          ) : (
+            <p className="caption-md w-full px-12 py-12 text-gray-600">
+              {citationsStatus === 'error'
+                ? '인용 판례를 불러오지 못했습니다.'
+                : '인용 판례를 불러오는 중입니다.'}
+            </p>
+          )}
         </div>
       </div>
 
